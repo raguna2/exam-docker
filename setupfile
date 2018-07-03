@@ -1,0 +1,20 @@
+#!/bin/bash
+set -Ceu
+
+#必ずdockerfileのあるファイル上が作業ディレクトリになる。
+git clone https://9c7787152d7a8bc794d6a9678ea3aa58a5302fee:x-oauth-basic@github.com/raguna2/montage.git
+cp ./after_docker_run_exec ./montage/
+cp ./init.sql ./montage/
+cp ./settings_secret.py ./montage/montage4/
+#-v <この部分>:/var/www/app/　の<この部分>とあるところは自分の作業をしたいファイルにする。
+docker run -it \
+-p 8000:8000 \
+-p 5432:5432 \
+--name montage \
+-v /Users/kutsumi/docker-django/montage/:/var/www/app/ \
+--env POSTGRES_USER='myprojectuser' \
+--env POSTGRES_DATABASE='myproject' \
+--env POSTGRES_PASSWORD='password' \
+montage-image:1.0 \
+/bin/bash
+
