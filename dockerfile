@@ -22,20 +22,24 @@ RUN apt-get -y install sudo
 
 # Djangoインストール
 RUN pip install django==1.11.4
-# RUN apt-get install -y postgresql84 postgresql84-server postgresql84-contrib
+RUN pip install numpy==1.14.5
+RUN pip install pandas==0.23.3
+RUN pip install python-dateutil==2.7.3
+RUN pip install pytz==2018.3
+RUN pip install six==1.11.0
+
 RUN apt-get -y install postgresql postgresql-client
 RUN apt-get install -qy python3-psycopg2
 RUN apt-get install -qy python3-pystache
 RUN apt-get install -qy python3-yaml
 RUN apt-get -qy autoremove
 
-RUN mkdir -p /var/www/app/
-WORKDIR /var/www/app/
+RUN mkdir -p /var/www/app/fruit_sales/
+WORKDIR /var/www/app/fruit_sales/
+RUN git clone https://github.com/raguna2/fruit_sales.git
+RUN pip install --upgrade pip
 RUN pip install psycopg2
 RUN pip install psycopg2-binary
-RUN pip install social-auth-app-django
-RUN pip install Pillow
-RUN pip install requests requests-oauthlib
 WORKDIR /root/
 RUN mkdir /root/.vim
 RUN git clone https://github.com/Shougo/neobundle.vim /root/.vim/
@@ -44,5 +48,5 @@ RUN echo "" > /root/.bashrc
 RUN cat mybashrc > /root/.bashrc
 COPY mybash_profile /root/.bash_profile
 COPY myvim /root/.vimrc
-WORKDIR /var/www/app/
+WORKDIR /var/www/app/fruit_sales/fruit_sales/
 CMD ['/bin/bash']
